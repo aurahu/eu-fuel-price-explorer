@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 from io import BytesIO
 from datetime import datetime, timezone
-from src.fuel_pipeline.database.get_conn import get_connection
+from ingestion.fuel_pipeline.database.get_conn import get_connection
 
 SOURCE_URL = "https://energy.ec.europa.eu/document/download/264c2d0f-f161-4ea3-a777-78faae59bea0_en?filename=Weekly%20Oil%20Bulletin%20Weekly%20prices%20with%20Taxes%20-%202024-02-19.xlsx"
 
@@ -46,6 +46,9 @@ data = data.iloc[:-2]
 data["observed_date"] = observed_date
 data["ingested_at"] = ingested_at
 data["source_url"] = SOURCE_URL
+
+# Converting pandas NaN to Python None
+data = data.where(pd.notna(data), None)
 
 # Preparing rows for patch insertion
 rows = list(
