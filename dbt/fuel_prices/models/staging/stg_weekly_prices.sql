@@ -65,8 +65,25 @@ cleaned AS (
     SELECT *
     FROM unpivoted_and_converted
     WHERE price_eur_per_litre IS NOT NULL
+),
+
+country_mapping AS (
+    SELECT *
+    FROM {{ ref('country_codes') }}
+),
+
+final AS (
+    SELECT
+        c.country,
+        m.country_code,
+        c.fuel_type,
+        c.price_eur_per_litre,
+        c.observed_date
+    FROM cleaned AS c
+    LEFT JOIN country_mapping as m
+    ON c.country = m.country
 )
 
 SELECT *
-FROM cleaned
+FROM final
 ORDER BY country
