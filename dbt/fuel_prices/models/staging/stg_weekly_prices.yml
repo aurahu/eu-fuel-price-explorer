@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_weekly_prices
+    columns:
+
+      - name: country
+        data_tests:
+          - not_null
+
+      - name: fuel_type
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - petrol_95
+                  - diesel
+                  - heating_gas_oil
+                  - fuel_oil_low_sulphur
+                  - fuel_oil_high_sulphur
+                  - lpg
+
+      - name: observed_date
+        data_tests:
+          - not_null
+
+      - name: price_eur_per_litre
+        data_tests:
+          - not_null
