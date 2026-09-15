@@ -86,4 +86,3 @@ final AS (
 
 SELECT *
 FROM final
-ORDER BY country
