@@ -7,11 +7,23 @@ from ingestion.fuel_pipeline.database.get_conn import get_connection
 SOURCE_URL = "https://energy.ec.europa.eu/document/download/264c2d0f-f161-4ea3-a777-78faae59bea0_en?filename=Weekly%20Oil%20Bulletin%20Weekly%20prices%20with%20Taxes%20-%202024-02-19.xlsx"
 
 # Downloading
-response = requests.get(SOURCE_URL)
+print("Downloading source file...")
+
+response = requests.get(
+    SOURCE_URL,
+    timeout=30
+)
+
 response.raise_for_status()
 
-# Reading
+print(f"Downloaded {len(response.content) / 1024:.1f} KB")
+
+print("Reading Excel file...")
+
+#Reading
 df = pd.read_excel(BytesIO(response.content))
+
+print("Excel file loaded.")
 
 # Removing whitespace from all column names
 df.columns = df.columns.str.strip()
@@ -68,6 +80,8 @@ rows = list(
     ].itertuples(index=False, name=None)
 )
 
+print("Connecting to database...")
+
 # Load data into PostgreSQL
 with get_connection() as connection:
     with connection.cursor() as cursor:
@@ -93,4 +107,5 @@ with get_connection() as connection:
             rows
         )
 
+print(f"Source observation date: {observed_date}")
 print(f"Attempted to load {len(rows)} rows.")
