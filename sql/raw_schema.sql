@@ -1,4 +1,4 @@
-CREATE TABLE raw_weekly_prices (
+CREATE TABLE IF NOT EXISTS raw_weekly_prices (
     id BIGSERIAL PRIMARY KEY,
 
     country TEXT,

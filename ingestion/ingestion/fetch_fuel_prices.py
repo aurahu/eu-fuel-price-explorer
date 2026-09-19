@@ -28,16 +28,16 @@ print("Excel file loaded.")
 # Removing whitespace from all column names
 df.columns = df.columns.str.strip()
 
-# Extracting observation date and units
-# In the .xlsx file, the 2nd row includes the observation date and units, while 1st row includes column names.
+# Extracting observation date
+# In the .xlsx file, the 2nd row includes the observation date, while 1st row includes column names.
 observed_date = pd.to_datetime(df.iloc[0, 0]).date()
-units = df.iloc[0, 1:]
 
 # Adding pipeline metadata
 ingested_at = datetime.now(timezone.utc)
 
 # Extracting actual observations
 data = df.iloc[1:].copy()
+
 
 # MINIMAL CLEAN-UP
 
