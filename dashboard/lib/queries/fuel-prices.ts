@@ -9,10 +9,10 @@ export async function getLatestFuelPrices() {
       fuel_type,
       observed_date,
       price_eur_per_litre
-    FROM analytics.fact_fuel_prices
+    FROM analytics.fact_weekly_fuel_prices
     WHERE observed_date = (
       SELECT MAX(observed_date)
-      FROM analytics.fact_fuel_prices
+      FROM analytics.fact_weekly_fuel_prices
     )
   `);
 
@@ -25,11 +25,11 @@ export async function getCheapestPetrol() {
       country,
       price_eur_per_litre,
       observed_date
-      FROM analytics.fact_fuel_prices
+      FROM analytics.fact_weekly_fuel_prices
       WHERE fuel_type = 'petrol_95'
         AND observed_date = (
           SELECT MAX(observed_date)
-          FROM analytics.fact_fuel_prices
+          FROM analytics.fact_weekly_fuel_prices
         )
       ORDER BY price_eur_per_litre ASC
       LIMIT 1;
@@ -45,11 +45,11 @@ export async function getPriciestPetrol() {
       country,
       price_eur_per_litre,
       observed_date
-      FROM analytics.fact_fuel_prices
+      FROM analytics.fact_weekly_fuel_prices
       WHERE fuel_type = 'petrol_95'
         AND observed_date = (
           SELECT MAX(observed_date)
-          FROM analytics.fact_fuel_prices
+          FROM analytics.fact_weekly_fuel_prices
         )
       ORDER BY price_eur_per_litre DESC
       LIMIT 1;
@@ -65,11 +65,11 @@ export async function getCheapestDiesel() {
       country,
       price_eur_per_litre,
       observed_date
-      FROM analytics.fact_fuel_prices
+      FROM analytics.fact_weekly_fuel_prices
       WHERE fuel_type = 'diesel'
         AND observed_date = (
           SELECT MAX(observed_date)
-          FROM analytics.fact_fuel_prices
+          FROM analytics.fact_weekly_fuel_prices
         )
       ORDER BY price_eur_per_litre ASC
       LIMIT 1;
@@ -85,11 +85,11 @@ export async function getPriciestDiesel() {
       country,
       price_eur_per_litre,
       observed_date
-      FROM analytics.fact_fuel_prices
+      FROM analytics.fact_weekly_fuel_prices
       WHERE fuel_type = 'diesel'
         AND observed_date = (
           SELECT MAX(observed_date)
-          FROM analytics.fact_fuel_prices
+          FROM analytics.fact_weekly_fuel_prices
         )
       ORDER BY price_eur_per_litre DESC
       LIMIT 1;
@@ -103,7 +103,7 @@ export async function getPriciestDiesel() {
 export async function getLatestObservedDate() {
   const result = await pool.query(`
     SELECT MAX(observed_date) AS latest_date
-    FROM analytics.fact_fuel_prices;
+    FROM analytics.fact_weekly_fuel_prices;
   `);
 
   return result.rows[0].latest_date;
