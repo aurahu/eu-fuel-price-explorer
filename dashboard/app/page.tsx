@@ -22,13 +22,13 @@ export default async function Home() {
         
 
         {/* HERO */}
-        <div className="flex flex-col md:h-dvh md:flex-row w-full justify-center items-center md:border-b md:border-black">
+        <div className="flex flex-col md:h-dvh md:flex-row w-full bg-accent-yellow justify-center items-center md:border-b md:border-black">
 
           <div className="flex flex-col w-full items-center justify-center md:items-start gap-12 px-4 py-20 md:px-12 border-y border-black md:border-none">
             <div className="flex flex-row gap-2 md:gap-4 bg-black px-6 py-2 items-center justify-center">
               <div className="w-2 h-2 bg-success blur-[2px] rounded-full" />
               <p className="text-background font-semibold uppercase tracking-wider text-sm">
-                Last updated on {" "}
+                Observed on {" "}
                 {latestDate.toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "long",
@@ -88,9 +88,9 @@ export default async function Home() {
                   <p className="font-serif text-center text-4xl">{cheapestPetrol.country}</p>
                 </div>
 
-                {/* Last updated */}
+                {/* Observed on */}
                 <div className="w-full flex justify-between items-center">
-                  <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Last updated</Pill>
+                  <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Observed on</Pill>
                   <Pill className="text-gray-on-yellow text-sm!" variant="ghost">
                     {(cheapestPetrol.observed_date).toLocaleDateString("en-GB", {
                       day: "numeric",
@@ -116,9 +116,9 @@ export default async function Home() {
                   <p className="font-serif text-center text-4xl">{cheapestDiesel.country}</p>
                 </div>
 
-                {/* Last updated */}
+                {/* Observed on */}
                 <div className="w-full flex justify-between items-center">
-                  <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Last updated</Pill>
+                  <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Observed on</Pill>
                   <Pill className="text-gray-on-yellow text-sm!" variant="ghost">
                     {(cheapestDiesel.observed_date).toLocaleDateString("en-GB", {
                       day: "numeric",
@@ -134,7 +134,7 @@ export default async function Home() {
 
         {/* Most expensive Section */}
         <div className="w-full flex flex-col justify-center items-center">
-          <div className="relative w-full overflow-hidden min-h-200 py-6">
+          <div className="relative w-full overflow-hidden md:min-h-200 md:py-6">
             {/* BG image */}
             <Image
               src={"/texture-2.avif"}
@@ -146,19 +146,19 @@ export default async function Home() {
             <div className="absolute inset-0 bg-black/85 z-10" />
 
             {/* Content */}
-            <div className=" w-full flex flex-col justify-center gap-20 py-30 items-center relative z-20">
+            <div className=" w-full flex flex-col justify-center gap-20 pt-30 md:py-30 items-center relative z-20">
               <h2 className="font-serif text-[56px] leading-[100%] md:text-8xl md:max-w-4xl text-center text-background px-4">
                 The <span className="italic">highest</span> fuel prices were found in {priciestPetrol.country} and {priciestDiesel.country}.
               </h2>
 
               {/* Most expensive (mobile) */}
-              <div className="relative md:hidden z-30 w-full">
+              <div className="relative md:hidden z-30 w-full border-b border-black">
                 <TabPanel  tabs={[
                   {
                     label: "Petrol (95)",
                     color: "#FFF8E8",
                     content:
-                    <div className="flex flex-col w-full px-4 py-20 gap-9">
+                    <div className="flex flex-col w-full px-4 pt-30 pb-4 gap-9">
                       <p className="font-serif text-center text-4xl">
                       € {""}
                         <span className="font-digital text-7xl h-18">{Number(priciestPetrol.price_eur_per_litre).toFixed(3)}</span>
@@ -168,9 +168,9 @@ export default async function Home() {
                         in{""} {priciestPetrol.country}
                       </p>
 
-                      {/* Last updated */}
-                      <div className="w-full flex justify-between items-center">
-                        <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Last updated</Pill>
+                      {/* Observed on */}
+                      <div className="w-full flex justify-between items-center mt-12">
+                        <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Observed on</Pill>
                         <Pill className="text-gray-on-yellow text-sm!" variant="ghost">
                           {(priciestPetrol.observed_date).toLocaleDateString("en-GB", {
                             day: "numeric",
@@ -185,7 +185,7 @@ export default async function Home() {
                     label: "Diesel",
                     color: "#FFF8E8",
                     content:
-                    <div className="flex flex-col w-full px-4 py-20 gap-9">
+                    <div className="flex flex-col w-full px-4 pt-30 pb-4 gap-9">
                       <p className="font-serif text-center text-4xl">
                       € {""}
                         <span className="font-digital text-7xl h-18">{Number(priciestDiesel.price_eur_per_litre).toFixed(3)}</span>
@@ -195,9 +195,9 @@ export default async function Home() {
                         in{""} {priciestDiesel.country}
                       </p>
 
-                      {/* Last updated */}
-                      <div className="w-full flex justify-between items-center">
-                        <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Last updated</Pill>
+                      {/* Observed on */}
+                      <div className="w-full flex justify-between items-center mt-12">
+                        <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Observed on</Pill>
                         <Pill className="text-gray-on-yellow text-sm!" variant="ghost">
                           {(priciestDiesel.observed_date).toLocaleDateString("en-GB", {
                             day: "numeric",
@@ -230,9 +230,9 @@ export default async function Home() {
                     <p className="font-serif text-center text-4xl">{priciestPetrol.country}</p>
                   </div>
 
-                  {/* Last updated */}
+                  {/* Observed on */}
                   <div className="w-full flex justify-between items-center">
-                    <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Last updated</Pill>
+                    <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Observed on</Pill>
                     <Pill className="text-gray-on-yellow text-sm!" variant="ghost">
                       {(priciestPetrol.observed_date).toLocaleDateString("en-GB", {
                         day: "numeric",
@@ -257,9 +257,9 @@ export default async function Home() {
                     <p className="font-serif text-center text-4xl">{priciestDiesel.country}</p>
                   </div>
 
-                  {/* Last updated */}
+                  {/* Observed on */}
                   <div className="w-full flex justify-between items-center">
-                    <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Last updated</Pill>
+                    <Pill className="text-gray-on-yellow text-sm!" variant="ghost">Observed on</Pill>
                     <Pill className="text-gray-on-yellow text-sm!" variant="ghost">
                       {(priciestDiesel.observed_date).toLocaleDateString("en-GB", {
                         day: "numeric",
