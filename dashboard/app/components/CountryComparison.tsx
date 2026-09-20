@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+
 import {
   CaretDown,
   X,
@@ -274,7 +275,7 @@ export default function CountryComparison({ prices }: Props) {
                           className={`block w-full px-4 py-3 text-left ${
                             disabled
                               ? "cursor-not-allowed opacity-40"
-                              : "hover:bg-gray-50"
+                              : "hover:bg-black/5"
                           }`}
                         >
                           <span className="mr-2 text-base text-gray">
