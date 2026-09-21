@@ -42,9 +42,11 @@ jobs:
         run: python -m ingestion.ingestion.fetch_historical_prices
 
       - name: Create dbt profile
+        env:
+          DBT_PROFILES: ${{ secrets.DBT_PROFILES }}
         run: |
           mkdir -p ~/.dbt
-          echo "${{ secrets.DBT_PROFILES }}" > ~/.dbt/profiles.yml
+          echo "$DBT_PROFILES" > ~/.dbt/profiles.yml
 
       - name: Install dbt
         run: pip install dbt-postgres
