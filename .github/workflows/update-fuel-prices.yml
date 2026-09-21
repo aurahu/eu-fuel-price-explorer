@@ -1,0 +1,60 @@
+name: Update Fuel Prices
+
+on:
+  schedule:
+    - cron: "0 12 * * 4"
+
+  workflow-dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+      - uses: actions/checkout@v6
+        with:
+          python-version: '3.13'
+      
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run weekly fuel price ingestion
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: python -m ingestion.ingestion.fetch_fuel_prices
+
+      - name: Run historical price ingestion
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: python -m ingestion.ingestion.fetch_historical_prices
+
+      - name: Install dbt
+        run: pip install dbt-postgres
+
+      - name: Run dbt
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          cd dbt/fuel_prices
+          dbt build
+
+
+
+
+
