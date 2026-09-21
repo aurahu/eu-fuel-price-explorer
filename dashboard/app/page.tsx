@@ -68,7 +68,7 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row w-full bg-background pt-25 pb-4 md:py-25 gap-12 lg:max-w-7xl items-center justify-center">
+          <div className="flex flex-col md:flex-row w-full pt-25 pb-4 md:py-25 gap-12 lg:max-w-7xl items-center justify-center">
             <h2 className="font-serif text-6xl md:text-8xl text-center md:text-left px-4">
               The <span className="italic">cheapest</span> fuel in the past week.
             </h2>
@@ -282,8 +282,8 @@ export default async function Home() {
         </div>
 
         {/* Trend section */}
-        <div className="flex flex-col md:flex-row justify-center py-30 px-4 gap-9 md:gap-20">
-          <div className="md:max-w-2xl">
+        <div className="flex flex-col border-t border-black md:flex-row justify-center items-start py-30 px-4 md:px-20 gap-9 md:gap-20">
+          <div className="md:max-w-xl">
             <h2 className="mb-8 font-serif text-7xl md:text-8xl font-medium text-black text-center md:text-left">
               Explore Fuel Price History
             </h2>

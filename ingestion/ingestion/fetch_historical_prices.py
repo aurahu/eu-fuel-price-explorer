@@ -25,6 +25,7 @@ df = pd.read_excel(
     sheet_name="Prices with taxes"
 )
 
+
 print("Excel file loaded.")
 
 # Removing whitespace from all column names and turning to lowercase
@@ -64,7 +65,7 @@ df.columns = new_columns
 ingested_at = datetime.now(timezone.utc)
 
 # Skip the metadata/header rows and keep the actual observations
-data = df.iloc[3:].copy()
+data = df.iloc[2:].copy()
 
 
 # MINIMAL CLEAN-UP
@@ -119,6 +120,7 @@ create_table_query = f"""
 insert_query = f"""
     INSERT INTO raw_historical_prices ({column_names})
     VALUES ({placeholders})
+    ON CONFLICT (observed_date) DO NOTHING
 """
 
 with get_connection() as connection:

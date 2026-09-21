@@ -179,6 +179,26 @@ export function HistoricalFuelChart({
   });
 }, [historicalPrices]);
 
+const priceChange = useMemo(() => {
+  if (chartData.length < 2) {
+    return null;
+  }
+
+  const firstPrice = chartData[0].price;
+  const lastPrice =
+    chartData[chartData.length - 1].price;
+
+  const change = lastPrice - firstPrice;
+
+  const percentageChange =
+    (change / firstPrice) * 100;
+
+  return {
+    change,
+    percentageChange,
+  };
+}, [chartData]);
+
 
 
   const chartConfig = {
@@ -188,8 +208,16 @@ export function HistoricalFuelChart({
     },
   };
 
+  const formattedPriceChange = priceChange
+    ? `${priceChange.change >= 0 ? "+" : ""}${priceChange.change.toFixed(3)}`
+    : null;
+
+  const formattedPercentageChange = priceChange
+    ? `${priceChange.percentageChange >= 0 ? "+" : ""}${priceChange.percentageChange.toFixed(2)}%`
+    : null;
+
   return (
-    <div className="space-y-6 w-full">
+    <div className="space-y-6 w-full md:w-4xl">
       {/* Controls */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         {/* Country */}
@@ -290,8 +318,21 @@ export function HistoricalFuelChart({
           </Select>
         </div>
       </div>
-      <div className="flex md:justify-end pt-6">
+      <div className="flex justify-between items-end pt-6">
         <Pill className="text-muted-foreground text-sm!" variant="ghost">EUR / L</Pill>
+         {priceChange && (
+          <div className="shrink-0 text-right">
+            <p className="text-sm text-muted-foreground mb-4 tracking-wide font-normal">
+              Total change (EUR / L)
+            </p>
+            <p className="text-5xl mb-2 font-serif font-medium">
+              {formattedPriceChange}
+            </p>
+            <p className="text-base font-normal tracking-wide text-muted-foreground">
+              {formattedPercentageChange}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Chart */}
