@@ -13,18 +13,20 @@ response = requests.get(
     timeout=30
 )
 
-response.raise_for_status()
+content_type = response.headers.get("Content-Type", "")
+
+if not response.content:
+    raise RuntimeError("Source file is empty.")
 
 print(f"Downloaded {len(response.content) / 1024:.1f} KB")
 
+#Reading
 print("Reading Excel file...")
 
-#Reading
 df = pd.read_excel(
     BytesIO(response.content),
     sheet_name="Prices with taxes"
 )
-
 
 print("Excel file loaded.")
 
@@ -36,8 +38,6 @@ df.columns = (
     .str.replace(".", "_", regex=False)
 )
 
-
-
 # Renaming duplicate column names
 new_columns = []
 
@@ -47,26 +47,22 @@ for idx, col in enumerate(df.columns):
     count = previous_columns.tolist().count(col)
     
     if count == 0:
-        # First time we see this name → keep it as is
+        # First time we see this name -> keep it as is
         new_name = col
     else:
-        # Duplicate → add a suffix (_1, _2, ...)
+        # Duplicate -> add a suffix (_1, _2, ...)
         new_name = f"{col}_{count}"
     
     new_columns.append(new_name)
 
-# Rreplace the old column names
+# Replace the old column names
 df.columns = new_columns
-
-
-
 
 # Creating pipeline metadata
 ingested_at = datetime.now(timezone.utc)
 
 # Skip the metadata/header rows and keep the actual observations
 data = df.iloc[2:].copy()
-
 
 # MINIMAL CLEAN-UP
 
@@ -81,7 +77,6 @@ data = data[pd.to_datetime(data["observed_date"], errors="coerce").notna()]
 # Adding pipeline metadata
 data["ingested_at"] = ingested_at
 data["source_url"] = SOURCE_URL
-
 
 # Converting pandas NaN to Python None
 data = data.where(pd.notna(data), None)
@@ -120,7 +115,7 @@ create_table_query = f"""
 insert_query = f"""
     INSERT INTO raw_historical_prices ({column_names})
     VALUES ({placeholders})
-    ON CONFLICT (observed_date) DO NOTHING
+    ON CONFLICT (observed_date) DO NOTHING;
 """
 
 with get_connection() as connection:
@@ -128,5 +123,4 @@ with get_connection() as connection:
         cursor.execute(create_table_query)
         cursor.executemany(insert_query, rows)
 
-
-print(f"Attempted to load {len(rows)} rows.")
+        print(f"Rows found: {len(rows)}")

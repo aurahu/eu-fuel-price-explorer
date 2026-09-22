@@ -16,11 +16,16 @@ response = requests.get(
 
 response.raise_for_status()
 
+content_type = response.headers.get("Content-Type", "")
+
+if not response.content:
+    raise RuntimeError("Source file is empty.")
+
 print(f"Downloaded {len(response.content) / 1024:.1f} KB")
 
+#Reading
 print("Reading Excel file...")
 
-#Reading
 df = pd.read_excel(BytesIO(response.content))
 
 print("Excel file loaded.")
@@ -30,13 +35,35 @@ df.columns = df.columns.str.strip()
 
 # Extracting observation date
 # In the .xlsx file, the 2nd row includes the observation date, while 1st row includes column names.
-observed_date = pd.to_datetime(df.iloc[0, 0]).date()
+try:
+    observed_date = pd.to_datetime(df.iloc[0, 0]).date()
+except (TypeError, ValueError):
+    raise RuntimeError(
+        "Could not extract observation date from the source file."
+    )
 
 # Adding pipeline metadata
 ingested_at = datetime.now(timezone.utc)
 
 # Extracting actual observations
 data = df.iloc[1:].copy()
+
+required_columns = {
+    "in EUR",
+    "Euro-super 95  (I)",
+    "Gas oil automobile Automotive gas oil Dieselkraftstoff (I)",
+    "Gas oil de chauffage Heating gas oil Heizöl (II)",
+    "Fuel oil - Schweres Heizöl (III) Soufre",
+    "Fuel oil -Schweres Heizöl (III) Soufre > 1% Sulphur > 1% Schwefel > 1%",
+    "GPL pour moteur LPG motor fuel",
+}
+
+missing_columns = required_columns - set(df.columns)
+
+if missing_columns:
+    raise RuntimeError(
+        f"Source file is missing expected columns: {sorted(missing_columns)}"
+    )
 
 
 # MINIMAL CLEAN-UP
@@ -53,6 +80,11 @@ data = data.rename(columns={
 
 # Removing last two rows (contains weighted averages, which are not needed)
 data = data.iloc[:-2]
+
+if len(data) != 27:
+    raise RuntimeError(
+        f"Expected 27 country rows, found {len(data)}."
+    )
 
 # Adding pipeline metadata & observation date
 data["observed_date"] = observed_date
@@ -107,5 +139,5 @@ with get_connection() as connection:
             rows
         )
 
-print(f"Source observation date: {observed_date}")
-print(f"Attempted to load {len(rows)} rows.")
+        print(f"Source observation date: {observed_date}")
+        print(f"Rows found: {len(rows)}")
