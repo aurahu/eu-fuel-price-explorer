@@ -2,14 +2,13 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
 
 :root {
   --black: oklch(0.2435 0 0);
   --accent-purple: oklch(0.9077 0.0476 289.35);
   --accent-yellow-bright: oklch(0.9714 0.1257 112.85);
   --accent-yellow: oklch(97.3% 0.074 102.7);
-  --success: oklch(0.8803 0.1211 148.6);
+  --success: oklch(75.635% 0.1857 146.463);
   --gray: oklch(0.6969 0.0189 17.62);
   --light-gray: oklch(84.7% 0.016 17.5);
   --gray-on-yellow: oklch(0.5129 0.0267 285.42);
@@ -185,5 +184,22 @@ body {
     .bg-animation {
       animation: none;
     }
+  }
+
+  @keyframes breathe {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+
+  .breathe {
+    animation: breathe 2s ease-in-out infinite;
   }
 }

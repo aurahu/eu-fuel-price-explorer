@@ -16,10 +16,11 @@ export default function TextureCard({
   return (
     <div className={`relative overflow-hidden h-100 p-6 ${className}`}>
       <Image
-        src={"/texture-1.avif"}
+        src={"/texture-1.1.jpg"}
         alt=""
         fill
         className="object-cover"
+        sizes="400px"
       />
 
       <div

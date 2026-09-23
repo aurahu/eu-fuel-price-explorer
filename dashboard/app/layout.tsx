@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import {Instrument_Serif, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Header from "./components/Header";
 
 const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
 
@@ -24,7 +25,7 @@ const digitalNumbers = localFont({
 
 export const metadata: Metadata = {
   title: "European Union Fuel Price Explorer",
-  description: "XXX",
+  description: "Explore European fuel prices, compare countries, and track petrol and diesel price trends over time.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -33,7 +34,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={cn("h-full", "antialiased", instrumentSerif.variable, instrumentSans.variable, digitalNumbers.variable, "font-mono", jetbrainsMono.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Header />
+        {children}
+        </body>
     </html>
   );
 }

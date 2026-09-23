@@ -6,7 +6,7 @@ import Pill from "./components/Pill";
 import TabPanel from "./components/TabPanel";
 import CountryComparison from "./components/CountryComparison";
 import { HistoricalFuelChart } from "./components/HistoricalFuelChart";
-import { SealCheckIcon, GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon, ArrowDownIcon, GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";
 
 export default async function Home() {
   const latestDate = await getLatestObservedDate();
@@ -24,12 +24,12 @@ export default async function Home() {
         
 
         {/* HERO */}
-        <div id="home" className="flex flex-col md:h-dvh lg:flex-row w-full bg-accent-yellow justify-center items-center md:border-b md:border-black">
+        <div id="home" className="flex flex-col md:h-dvh lg:flex-row w-full bg-accent-yellow justify-center items-center border-b md:border-black">
 
-          <div className="flex flex-col w-full lg:w-1/2 items-center justify-center lg:items-start gap-12 px-4 py-20 md:px-12 border-y border-black md:border-none">
-            <div className="flex flex-row gap-2 md:gap-4 bg-black px-6 py-2 items-center justify-center">
-              <div className="w-2 h-2 bg-success blur-[2px] rounded-full" />
-              <p className="text-background font-semibold uppercase tracking-wider text-sm">
+          <div className="flex flex-col w-full lg:w-1/2 items-center justify-center lg:items-start gap-12 px-4 py-20 md:px-12 border-black md:border-none">
+            <div className="flex flex-row gap-2 md:gap-2 items-center justify-center">
+              <div className="w-2 h-2 bg-success breathe blur-[2px] rounded-full" />
+              <p className="text-black/60 font-semibold uppercase tracking-wider text-sm">
                 Observed on {" "}
                 {latestDate.toLocaleDateString("en-GB", {
                   day: "numeric",
@@ -41,6 +41,15 @@ export default async function Home() {
             <h1 className="text-6xl md:text-8xl lg:text-left font-serif text-black text-center">
               Fuel prices across the <span className="italic">European Union</span>, updated weekly.
             </h1>
+            <a href="#cheapest-fuel-last-week" className="flex justify-center items-center">
+              <span className="size-11 bg-black -mr-2 items-center flex justify-center rounded-full">
+                <ArrowDownIcon weight="regular" color="var(--color-background)" size={24} />
+              </span>
+              <span className="px-4 py-2 text-background bg-black rounded-full text-lg font-medium">
+                Get insights
+              </span>
+    
+            </a>
           </div>
 
           
@@ -286,7 +295,7 @@ export default async function Home() {
         </div>
 
         {/* Trend section */}
-        <div className="flex flex-col border-t border-black lg:flex-row justify-center items-center py-30 px-4 md:px-20 gap-9 lg:gap-20">
+        <div id="trends" className="flex flex-col border-t border-black lg:flex-row justify-center items-center py-30 px-4 md:px-20 gap-9 lg:gap-20">
           <div className="lg:max-w-xl">
             <h2 className="mb-8 font-serif text-7xl md:text-8xl font-medium text-black text-center lg:text-left">
               Explore Fuel Price History
@@ -313,6 +322,17 @@ export default async function Home() {
                 <p className="text-base md:text-lg text-muted-foreground">
                   European Commission Weekly Oil Bulletin
                 </p>
+                <Link
+                  className="text-left text-lg font-medium flex gap-2"
+                  href="https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>
+                    <ArrowRightIcon weight="light" color="var(--color-black)" size={24} />
+                  </span>
+                    Visit site
+                </Link>
               </div>
               <div className="flex flex-col gap-4">
                 <h3 className="font-serif text-3xl md:text-4xl">
@@ -358,8 +378,8 @@ export default async function Home() {
                   >
                   </Image>
                 </div>
-                <div className="w-full space-y-8 hidden xl:block">
-                  <p className="text-background font-semibold uppercase tracking-wider text-sm md:text-base text-center">
+                <div className="w-full space-y-8 hidden xl:flex xl:flex-col items-start">
+                  <p className="text-background font-semibold uppercase tracking-wider text-sm md:text-base lg:text-left text-center">
                     Last updated on {" "}
                     {latestDate.toLocaleDateString("en-GB", {
                       day: "numeric",
@@ -367,24 +387,17 @@ export default async function Home() {
                       year: "numeric",
                     })}
                   </p>
-                  <div className="flex flex-col md:flex-row md:justify-center gap-6 items-center justify-center ">
-                    <Link
-                      className="bg-background flex gap-2 rounded-sm px-4 py-2 text-center text-lg font-medium"
-                      href="https://github.com/aurahu/eu-fuel-price-explorer"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span>
-                        <GithubLogoIcon weight="light" color="var(--color-black)" size={24} />
-                      </span>
-                        View Source Code
-                    </Link>
-                    <a
-                      className="text-center text-lg text-background underline underline-offset-3 font-medium"
-                      href="#home">
-                      Back to top
-                    </a>
-                  </div>
+                  <Link
+                    className="bg-background flex gap-2 rounded-sm px-4 py-2 text-center text-lg font-medium"
+                    href="https://github.com/aurahu/eu-fuel-price-explorer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>
+                      <GithubLogoIcon weight="light" color="var(--color-black)" size={24} />
+                    </span>
+                      View Source Code
+                  </Link>
                 </div>
               </div>
               
@@ -394,7 +407,7 @@ export default async function Home() {
                     Source
                   </h3>
                   <p className="text-base md:text-xl text-light-gray">
-                    European Commission Weekly Oil Bulletin
+                    Weekly and historical fuel-price data published by the European Commission. Weekly data is updated on Thursdays.
                   </p>
                 </div>
 
@@ -456,17 +469,39 @@ export default async function Home() {
                       </span>
                         View Source Code
                     </Link>
-                    <a
-                      className="text-center text-lg text-background underline underline-offset-3 font-medium"
-                      href="#home">
-                      Back to top
-                    </a>
                   </div>
                 </div>
               </div>
 
             </div>
           </div>
+
+        </div>
+        <div className="flex flex-col md:flex-row md:justify-between bg-accent-yellow px-4 gap-3 pb-8">
+          <Link
+            className="text-center md:text-left justify-center text-lg font-medium flex gap-2"
+            href="https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>
+              <ArrowRightIcon weight="light" color="var(--color-black)" size={24} />
+            </span>
+              Visit data source site
+          </Link>
+          <Link
+            className="text-center md:text-right text-lg font-medium"
+            href="https://www.magnific.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Textures designed by Magnific
+          </Link>
+          <a
+            className="text-center text-black text-lg underline underline-offset-3 font-medium"
+            href="#home">
+            Back to top
+          </a>
 
         </div>
 

@@ -149,393 +149,398 @@ export default function CountryComparison({ prices }: Props) {
   }, [selectedData, dieselSort]);
 
   return (
-    <div className="w-full bg-accent-yellow">
+  <div className="w-full bg-accent-yellow">
 
-      <div className="flex flex-col lg:flex-row lg:items-start justify-center items-center px-4 md:px-12 md:gap-12 gap-6 py-30">
+    <div className="flex flex-col lg:flex-row lg:items-start justify-center items-center px-4 md:px-12 md:gap-12 gap-6 pt-30 pb-4 md:py-30">
 
-        {/* INTRO + COUNTRY SELECTOR */}
-        <div className="w-full lg:w-xl flex flex-col lg:justify-start lg:items-start items-center justify-center">
+      {/* INTRO + COUNTRY SELECTOR */}
+      <div className="w-full lg:w-xl flex flex-col lg:justify-start lg:items-start items-center justify-center">
 
-          <h2 className="mb-8 font-serif text-7xl md:text-8xl font-medium text-black text-center md:text-left">
-            Compare countries
-          </h2>
+        <h2 className="mb-8 font-serif text-7xl md:text-8xl font-medium text-black text-center md:text-left">
+          Compare countries
+        </h2>
 
-          <p className="mb-12 text-center text-lg md:text-xl font-medium text-black/50 md:text-left">
-            Compare last week’s fuel prices across countries.
-          </p>
+        <p className="mb-12 text-center text-lg md:text-xl font-medium text-black/50 md:text-left">
+          Compare last week’s fuel prices across countries.
+        </p>
 
-          {/* Selected country pills */}
-          <div className="mb-3 flex flex-wrap justify-center gap-3 md:justify-start">
-            {selectedCountries.map((code) => {
-              const country = countries.find(
-                (c) => c.code === code
-              );
+        {/* Selected country pills */}
+        <div className="mb-3 flex flex-wrap justify-center gap-3 md:justify-start">
+          {selectedCountries.map((code) => {
+            const country = countries.find(
+              (c) => c.code === code
+            );
 
-              return (
-                <button
-                  key={code}
-                  type="button"
-                  onClick={() => toggleCountry(code)}
-                  className="flex cursor-pointer items-center gap-2 rounded-sm bg-black px-3 py-2 font-sans text-lg font-medium text-background"
-                >
-                  <span className="text-base opacity-60">
-                    {country?.code}
-                  </span>
-
-                  {country?.name}
-
-                  <X size={20} />
-                </button>
-              );
-            })}
-          </div>
-
-          {/* DROPDOWN */}
-          <div
-            ref={dropdownRef}
-            className="relative w-full mt-9 md:max-w-sm"
-          >
-
-            {/* Dropdown opener / search */}
-            {dropdownOpen ? (
-              <div
-                className="flex w-full items-center gap-2 rounded-sm bg-background border border-light-gray px-4 py-3"
-              >
-                <MagnifyingGlass
-                  size={20}
-                  className="shrink-0 text-gray"
-                />
-
-                <input
-                  autoFocus
-                  type="text"
-                  value={searchQuery}
-                  onChange={(event) =>
-                    setSearchQuery(event.target.value)
-                  }
-                  placeholder="Search countries..."
-                  className="w-full text-base outline-none md:text-lg"
-                />
-              </div>
-            ) : (
+            return (
               <button
+                key={code}
                 type="button"
-                disabled={selectedCountries.length >= 3}
-                onClick={() => {
-                  setDropdownOpen(true);
-                  setSearchQuery("");
-                }}
-                className={`flex w-full items-center gap-2 rounded-sm border border-light-gray px-4 py-3 text-left ${
-                  selectedCountries.length >= 3
-                    ? "cursor-not-allowed bg-black/5 opacity-50"
-                    : "cursor-pointer bg-background"
-                }`}
+                onClick={() => toggleCountry(code)}
+                className="flex cursor-pointer items-center gap-2 rounded-sm bg-black px-3 py-2 font-sans text-lg font-medium text-background"
               >
-                <MagnifyingGlass
-                  size={20}
-                  className="shrink-0 text-gray"
-                />
-
-                <span className="flex-1 text-base md:text-lg">
-                  {selectedCountries.length >= 3 ? (
-                    <span className="text-gray-950">
-                      Remove one country to continue
-                    </span>
-                  ) : (
-                    "Select up to 3 countries"
-                  )}
+                <span className="text-base opacity-60">
+                  {country?.code}
                 </span>
 
-                <CaretDown
-                  size={20}
-                  color="var(--color-gray)"
-                  className="shrink-0"
-                />
+                {country?.name}
+
+                <X size={20} />
               </button>
-            )}
-
-            {/* Dropdown list */}
-            {dropdownOpen && (
-              <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-sm border border-light-gray bg-background">
-
-                <div className="max-h-64 overflow-y-auto">
-
-                  {filteredCountries.length > 0 ? (
-                    filteredCountries.map((country) => {
-                      const disabled =
-                        selectedCountries.length >= 3;
-
-                      return (
-                        <button
-                          key={country.code}
-                          type="button"
-                          disabled={disabled}
-                          onClick={() =>
-                            toggleCountry(country.code)
-                          }
-                          className={`block w-full px-4 py-3 text-left ${
-                            disabled
-                              ? "cursor-not-allowed opacity-40"
-                              : "hover:bg-black/5"
-                          }`}
-                        >
-                          <span className="mr-2 text-base text-gray">
-                            {country.code}
-                          </span>
-
-                          <span className="text-lg text-black">
-                            {country.name}
-                          </span>
-                        </button>
-                      );
-                    })
-                  ) : (
-                    <p className="px-4 py-4 text-sm text-gray-500">
-                      No countries found.
-                    </p>
-                  )}
-
-                </div>
-              </div>
-            )}
-
-          </div>
+            );
+          })}
         </div>
-        
 
-        {/* STATS */}
+        {/* DROPDOWN */}
+        <div
+          ref={dropdownRef}
+          className="relative w-full mt-9 md:max-w-sm"
+        >
 
-        {/* DESKTOP RIGHT SIDE */}
-        <div className="hidden md:block w-full md:max-w-3xl">
-          {selectedCountries.length > 0 ? (
+          {/* Dropdown opener / search */}
+          {dropdownOpen ? (
+            <div className="flex w-full items-center gap-2 rounded-sm bg-background border border-light-gray px-4 py-3">
+              <MagnifyingGlass
+                size={20}
+                className="shrink-0 text-gray"
+              />
 
-            /* DESKTOP STATS */
-            <div className="bg-background p-9 rounded-sm border border-light-gray">
-              <section className="space-y-7">
+              <input
+                autoFocus
+                type="text"
+                value={searchQuery}
+                onChange={(event) =>
+                  setSearchQuery(event.target.value)
+                }
+                placeholder="Search countries..."
+                className="w-full text-base outline-none md:text-lg"
+              />
+            </div>
+          ) : (
+            <button
+              type="button"
+              disabled={selectedCountries.length >= 3}
+              onClick={() => {
+                setDropdownOpen(true);
+                setSearchQuery("");
+              }}
+              className={`flex w-full items-center gap-2 rounded-sm border border-light-gray px-4 py-3 text-left ${
+                selectedCountries.length >= 3
+                  ? "cursor-not-allowed bg-black/5 opacity-50"
+                  : "cursor-pointer bg-background"
+              }`}
+            >
+              <MagnifyingGlass
+                size={20}
+                className="shrink-0 text-gray"
+              />
 
-                <div className="flex items-center justify-between mb-12">
-                  <Pill variant="outline">
-                    Fuel prices (EUR / L)
-                  </Pill>
+              <span className="flex-1 text-base md:text-lg">
+                {selectedCountries.length >= 3 ? (
+                  <span className="text-gray-950">
+                    Remove one country to continue
+                  </span>
+                ) : (
+                  "Select up to 3 countries"
+                )}
+              </span>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setPetrolSort((current) =>
-                        current === "asc" ? "desc" : "asc"
-                      )
-                    }
+              <CaretDown
+                size={20}
+                color="var(--color-gray)"
+                className="shrink-0"
+              />
+            </button>
+          )}
+
+          {/* Dropdown list */}
+          {dropdownOpen && (
+            <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-sm border border-light-gray bg-background">
+
+              <div className="max-h-64 overflow-y-auto">
+
+                {filteredCountries.length > 0 ? (
+                  filteredCountries.map((country) => {
+                    const disabled =
+                      selectedCountries.length >= 3;
+
+                    return (
+                      <button
+                        key={country.code}
+                        type="button"
+                        disabled={disabled}
+                        onClick={() =>
+                          toggleCountry(country.code)
+                        }
+                        className={`block w-full px-4 py-3 text-left ${
+                          disabled
+                            ? "cursor-not-allowed opacity-40"
+                            : "hover:bg-black/5"
+                        }`}
+                      >
+                        <span className="mr-2 text-base text-gray">
+                          {country.code}
+                        </span>
+
+                        <span className="text-lg text-black">
+                          {country.name}
+                        </span>
+                      </button>
+                    );
+                  })
+                ) : (
+                  <p className="px-4 py-4 text-sm text-gray-500">
+                    No countries found.
+                  </p>
+                )}
+
+              </div>
+            </div>
+          )}
+
+        </div>
+      </div>
+
+
+      {/* ================================================== */}
+      {/* DESKTOP STATS / EMPTY STATE                       */}
+      {/* ================================================== */}
+
+      <div className="hidden md:block w-full md:max-w-3xl">
+
+        {selectedCountries.length > 0 ? (
+
+          /* DESKTOP STATS */
+          <div className="bg-background p-9 rounded-sm border border-light-gray">
+            <section className="space-y-7">
+
+              <div className="flex items-center justify-between mb-12">
+                <Pill variant="outline">
+                  Fuel prices (EUR / L)
+                </Pill>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setPetrolSort((current) =>
+                      current === "asc" ? "desc" : "asc"
+                    )
+                  }
+                >
+                  {petrolSort === "asc" ? (
+                    <div className="flex size-11 rounded-full cursor-pointer bg-black/5 items-center justify-center border border-light-gray">
+                      <SortAscending
+                        size={20}
+                        color="var(--color-black)"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex size-11 rounded-full cursor-pointer bg-black/5 items-center justify-center border border-light-gray">
+                      <SortDescending size={20} />
+                    </div>
+                  )}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-3 gap-8 gap-y-12">
+
+                {/* HEADERS */}
+
+                <div>
+                  <Pill
+                    variant="ghost"
+                    className="text-gray-on-yellow"
                   >
-                    {petrolSort === "asc" ? (
-                      <div className="flex size-11 rounded-full cursor-pointer bg-black/5 items-center justify-center border border-light-gray">
-                        <SortAscending
-                          size={20}
-                          color="var(--color-black)"
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex size-11 rounded-full cursor-pointer bg-black/5 items-center justify-center border border-light-gray">
-                        <SortDescending size={20} />
-                      </div>
-                    )}
-                  </button>
+                    Country
+                  </Pill>
                 </div>
 
-                <div className="grid grid-cols-3 gap-8 gap-y-12">
+                <div className="text-right">
+                  <Pill
+                    variant="ghost"
+                    className="text-gray-on-yellow"
+                  >
+                    Petrol 95
+                  </Pill>
+                </div>
 
-                  {/* HEADERS */}
+                <div className="text-right">
+                  <Pill
+                    variant="ghost"
+                    className="text-gray-on-yellow"
+                  >
+                    Diesel
+                  </Pill>
+                </div>
 
-                  <div>
-                    <Pill
-                      variant="ghost"
-                      className="text-gray-on-yellow"
-                    >
-                      Country
-                    </Pill>
-                  </div>
+                {/* COUNTRIES */}
 
-                  <div className="text-right">
-                    <Pill
-                      variant="ghost"
-                      className="text-gray-on-yellow"
-                    >
-                      Petrol 95
-                    </Pill>
-                  </div>
+                {(() => {
+                  const cheapestPetrol = Math.min(
+                    ...petrol.map((price) =>
+                      Number(price.price_eur_per_litre)
+                    )
+                  );
 
-                  <div className="text-right">
-                    <Pill
-                      variant="ghost"
-                      className="text-gray-on-yellow"
-                    >
-                      Diesel
-                    </Pill>
-                  </div>
+                  const cheapestDiesel =
+                    diesel.length > 0
+                      ? Math.min(
+                          ...diesel.map((price) =>
+                            Number(price.price_eur_per_litre)
+                          )
+                        )
+                      : 0;
 
-                  {/* COUNTRIES */}
-
-                  {(() => {
-                    const cheapestPetrol = Math.min(
-                      ...petrol.map((price) =>
-                        Number(price.price_eur_per_litre)
-                      )
+                  return petrol.map((petrolPrice) => {
+                    const dieselPrice = diesel.find(
+                      (price) =>
+                        price.country_code ===
+                        petrolPrice.country_code
                     );
 
-                    const cheapestDiesel =
-                      diesel.length > 0
-                        ? Math.min(
-                            ...diesel.map((price) =>
-                              Number(price.price_eur_per_litre)
-                            )
-                          )
+                    const petrolValue = Number(
+                      petrolPrice.price_eur_per_litre
+                    );
+
+                    const dieselValue = dieselPrice
+                      ? Number(
+                          dieselPrice.price_eur_per_litre
+                        )
+                      : null;
+
+                    const petrolDifference =
+                      petrolValue - cheapestPetrol;
+
+                    const dieselDifference =
+                      dieselValue !== null
+                        ? dieselValue - cheapestDiesel
                         : 0;
 
-                    return petrol.map((petrolPrice) => {
-                      const dieselPrice = diesel.find(
-                        (price) =>
-                          price.country_code ===
-                          petrolPrice.country_code
-                      );
+                    const petrolPercentage =
+                      cheapestPetrol > 0
+                        ? (petrolDifference / cheapestPetrol) * 100
+                        : 0;
 
-                      const petrolValue = Number(
-                        petrolPrice.price_eur_per_litre
-                      );
+                    const dieselPercentage =
+                      cheapestDiesel > 0 &&
+                      dieselValue !== null
+                        ? (dieselDifference / cheapestDiesel) * 100
+                        : 0;
 
-                      const dieselValue = dieselPrice
-                        ? Number(
-                            dieselPrice.price_eur_per_litre
-                          )
-                        : null;
+                    const petrolIsCheapest =
+                      petrolValue === cheapestPetrol;
 
-                      const petrolDifference =
-                        petrolValue - cheapestPetrol;
+                    const dieselIsCheapest =
+                      dieselValue !== null &&
+                      dieselValue === cheapestDiesel;
 
-                      const dieselDifference =
-                        dieselValue !== null
-                          ? dieselValue - cheapestDiesel
-                          : 0;
+                    return (
+                      <div
+                        key={petrolPrice.country_code}
+                        className="contents"
+                      >
 
-                      const petrolPercentage =
-                        cheapestPetrol > 0
-                          ? (petrolDifference / cheapestPetrol) * 100
-                          : 0;
+                        {/* COUNTRY */}
 
-                      const dieselPercentage =
-                        cheapestDiesel > 0 &&
-                        dieselValue !== null
-                          ? (dieselDifference / cheapestDiesel) * 100
-                          : 0;
+                        <span className="font-serif text-4xl">
+                          {petrolPrice.country}
+                        </span>
 
-                      const petrolIsCheapest =
-                        petrolValue === cheapestPetrol;
+                        {/* PETROL */}
 
-                      const dieselIsCheapest =
-                        dieselValue !== null &&
-                        dieselValue === cheapestDiesel;
+                        <div className="flex flex-col items-end gap-4">
 
-                      return (
-                        <div
-                          key={petrolPrice.country_code}
-                          className="contents"
-                        >
-
-                          {/* COUNTRY */}
-
-                          <span className="font-serif text-4xl">
-                            {petrolPrice.country}
+                          <span className="text-right font-digital text-4xl">
+                            {petrolValue.toFixed(3)}
                           </span>
 
-                          {/* PETROL */}
-
-                          <div className="flex flex-col items-end gap-4">
-
-                            <span className="text-right font-digital text-4xl">
-                              {petrolValue.toFixed(3)}
-                            </span>
-
-                            <div className="text-base text-right text-gray-on-yellow">
-                              {petrolIsCheapest ? (
-                                <span className="text-green-700">
-                                  Cheapest
-                                </span>
-                              ) : (
-                                <span className="text-red-700 tracking-wide">
-                                  +€{petrolDifference.toFixed(3)} / +
-                                  {petrolPercentage.toFixed(1)}%
-                                </span>
-                              )}
-                            </div>
-
-                          </div>
-
-                          {/* DIESEL */}
-
-                          <div className="flex flex-col items-end gap-4">
-
-                            {dieselValue !== null ? (
-                              <>
-                                <span className="text-right font-digital text-4xl">
-                                  {dieselValue.toFixed(3)}
-                                </span>
-
-                                <div className="text-base text-right text-gray-on-yellow">
-                                  {dieselIsCheapest ? (
-                                    <span className="text-green-700">
-                                      Cheapest
-                                    </span>
-                                  ) : (
-                                    <span className="text-red-700 tracking-wide">
-                                      +€{dieselDifference.toFixed(3)} / +
-                                      {dieselPercentage.toFixed(1)}%
-                                    </span>
-                                  )}
-                                </div>
-                              </>
+                          <div className="text-base text-right text-gray-on-yellow">
+                            {petrolIsCheapest ? (
+                              <span className="text-green-700">
+                                Cheapest
+                              </span>
                             ) : (
-                              <span className="text-right font-digital text-3xl">
-                                —
+                              <span className="text-red-700 tracking-wide">
+                                +€{petrolDifference.toFixed(3)} / +
+                                {petrolPercentage.toFixed(1)}%
                               </span>
                             )}
-
                           </div>
 
                         </div>
-                      );
-                    });
-                  })()}
 
-                </div>
-              </section>
-            </div>
+                        {/* DIESEL */}
 
-          ) : (
+                        <div className="flex flex-col items-end gap-4">
 
-            /* DESKTOP EMPTY STATE */
+                          {dieselValue !== null ? (
+                            <>
+                              <span className="text-right font-digital text-4xl">
+                                {dieselValue.toFixed(3)}
+                              </span>
 
-            <div className="relative flex min-h-120 w-full items-center justify-center overflow-hidden rounded-sm p-9">
-              {/* Background image */}
-              <Image
-                src="/section-img.jpg"
-                alt="decorative image for country selection"
-                className="absolute inset-0 h-full w-full object-cover  brightness-150 saturate-120 hue-rotate-15"
-                sizes="600px"
-                fill
-              />
+                              <div className="text-base text-right text-gray-on-yellow">
+                                {dieselIsCheapest ? (
+                                  <span className="text-green-700">
+                                    Cheapest
+                                  </span>
+                                ) : (
+                                  <span className="text-red-700 tracking-wide">
+                                    +€{dieselDifference.toFixed(3)} / +
+                                    {dieselPercentage.toFixed(1)}%
+                                  </span>
+                                )}
+                              </div>
+                            </>
+                          ) : (
+                            <span className="text-right font-digital text-3xl">
+                              —
+                            </span>
+                          )}
 
-              {/* Overlay */}
-              <div className="bg-animation" />
+                        </div>
 
-              
-            </div>
-          )}
-        </div>
+                      </div>
+                    );
+                  });
+                })()}
+
+              </div>
+            </section>
+          </div>
+
+        ) : (
+
+          /* DESKTOP EMPTY STATE */
+
+          <div className="relative flex min-h-120 w-full items-center justify-center overflow-hidden rounded-sm p-9">
+
+            <Image
+              src="/section-img.jpg"
+              alt="Decorative image for country selection"
+              className="absolute inset-0 h-full w-full object-cover brightness-150 saturate-120 hue-rotate-15"
+              sizes="600px"
+              fill
+            />
+
+            <div className="bg-animation" />
+
+          </div>
+        )}
+
+      </div>
 
 
-        {/* MOBILE STATS */}
+      {/* ================================================== */}
+      {/* MOBILE STATS / EMPTY STATE                        */}
+      {/* ================================================== */}
 
-        {selectedCountries.length > 0 && (
-          <div className="w-full md:hidden">
+      <div className="w-full md:hidden">
 
+        {selectedCountries.length > 0 ? (
+
+          /* MOBILE STATS */
+
+          <>
             {/* PETROL */}
             <div className="w-full bg-background p-6 rounded-t-sm border-light-gray border border-b-0">
               <FuelSection
@@ -563,13 +568,33 @@ export default function CountryComparison({ prices }: Props) {
                 }
               />
             </div>
+          </>
+
+        ) : (
+
+          /* MOBILE EMPTY STATE */
+
+          <div className="relative flex min-h-120 w-full items-center justify-center overflow-hidden rounded-sm">
+
+            <Image
+              src="/section-img.jpg"
+              alt="Decorative image for country selection"
+              className="absolute inset-0 h-full w-full object-cover brightness-150 saturate-120 hue-rotate-15"
+              sizes="100vw"
+              fill
+            />
+
+            <div className="bg-animation" />
 
           </div>
+
         )}
 
       </div>
+
     </div>
-  );
+  </div>
+);
 }
 
 type FuelSectionProps = {
