@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 
 import {
   CaretDown,
@@ -150,10 +151,10 @@ export default function CountryComparison({ prices }: Props) {
   return (
     <div className="w-full bg-accent-yellow">
 
-      <div className="flex flex-col md:flex-row md:items-start justify-center items-center px-4 md:px-12 md:gap-12 gap-6 py-30">
+      <div className="flex flex-col lg:flex-row lg:items-start justify-center items-center px-4 md:px-12 md:gap-12 gap-6 py-30">
 
         {/* INTRO + COUNTRY SELECTOR */}
-        <div className="w-full md:w-xl flex flex-col md:justify-start md:items-start items-center justify-center">
+        <div className="w-full lg:w-xl flex flex-col lg:justify-start lg:items-start items-center justify-center">
 
           <h2 className="mb-8 font-serif text-7xl md:text-8xl font-medium text-black text-center md:text-left">
             Compare countries
@@ -513,14 +514,16 @@ export default function CountryComparison({ prices }: Props) {
 
             <div className="relative flex min-h-120 w-full items-center justify-center overflow-hidden rounded-sm p-9">
               {/* Background image */}
-              <img
-                src="/compare-countries-img.webp"
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover"
+              <Image
+                src="/section-img.jpg"
+                alt="decorative image for country selection"
+                className="absolute inset-0 h-full w-full object-cover  brightness-150 saturate-120 hue-rotate-15"
+                sizes="600px"
+                fill
               />
 
               {/* Overlay */}
-              <div className="absolute inset-0 bg-background/20" />
+              <div className="bg-animation" />
 
               
             </div>

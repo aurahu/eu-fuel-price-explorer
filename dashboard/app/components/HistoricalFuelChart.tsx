@@ -217,7 +217,7 @@ const priceChange = useMemo(() => {
     : null;
 
   return (
-    <div className="space-y-6 w-full md:w-4xl">
+    <div className="space-y-6 w-full lg:w-4xl">
       {/* Controls */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         {/* Country */}
