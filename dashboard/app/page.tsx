@@ -391,7 +391,7 @@ export default async function Home() {
                   </p>
                   <Link
                     className="bg-background flex gap-2 rounded-sm px-4 py-2 text-center text-lg font-medium"
-                    href="https://github.com/aurahu/eu-fuel-price-explorer"
+                    href="https://github.com/auroora/eu-fuel-price-explorer"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -462,7 +462,7 @@ export default async function Home() {
                   <div className="flex flex-col gap-6 items-center justify-center md:items-start ">
                     <Link
                       className="bg-background flex gap-2 rounded-sm px-4 py-2 text-center text-lg font-medium"
-                      href="https://github.com/aurahu/eu-fuel-price-explorer"
+                      href="https://github.com/auroora/eu-fuel-price-explorer"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

@@ -98,7 +98,7 @@ export default function MobileMenu() {
                 <div className="block">
                     <Link
                         className="bg-black text-background flex gap-2 rounded-sm font-sans px-4 py-2 text-center text-lg font-normal"
-                        href="https://github.com/aurahu/eu-fuel-price-explorer"
+                        href="https://github.com/auroora/eu-fuel-price-explorer"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
