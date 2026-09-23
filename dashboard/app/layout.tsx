@@ -26,7 +26,12 @@ const digitalNumbers = localFont({
 export const metadata: Metadata = {
   title: "European Union Fuel Price Explorer",
   description: "Explore European fuel prices, compare countries, and track petrol and diesel price trends over time.",
+   robots: {
+    index: false,
+    follow: false,
+  },
 };
+
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

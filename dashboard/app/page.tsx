@@ -8,6 +8,8 @@ import CountryComparison from "./components/CountryComparison";
 import { HistoricalFuelChart } from "./components/HistoricalFuelChart";
 import { ArrowRightIcon, ArrowDownIcon, GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const latestDate = await getLatestObservedDate();
   const cheapestPetrol = await getCheapestPetrol();
