@@ -4,15 +4,19 @@ European Fuel Price Explorer is a data engineering and visualization project tha
   
 The project collects fuel-price data from the European Commission's Weekly Oil Bulletin, stores the source data in PostgreSQL, transforms it with dbt, and exposes the resulting data through a Next.js dashboard.  
 
-## 1. Sources  
+## 1. Sources
 
-### Weekly data  
+### European Commission Weekly Oil Bulletin
 
-The weekly dataset contains the latest consumer fuel prices published by the [European Commission's Weekly Oil Bulletin](https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en). The dataset is updated every Thursday, containing prices from Monday. All prices include tax.  
-  
-### Historical data  
+All fuel price data used in this project comes from the [European Commission's Weekly Oil Bulletin](https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en).
 
-The historical workbook provides longer-term observations for the same fuel types as in the weekly data, dating back to 2005. This dataset is also published by the [European Commission's Weekly Oil Bulletin](https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en). The project uses the "Prices with taxes" dataset to provide historical trends. The historical data also includes the weekly data.
+The project uses the **"Prices with taxes" historical dataset**, which contains weekly observations dating back to 2005. This historical dataset serves as the project's single source of fuel price data.
+
+For the dashboard's current price comparisons, the latest observation date from the historical dataset is used. This latest observation is exposed as a separate weekly data model for easier use by the dashboard, but it is not a separate source dataset.
+
+All prices used in the project include taxes.
+
+The historical dataset is downloaded and processed by the ingestion pipeline, with the data transformed from the original workbook structure into a format suitable for analysis.
 
 ### The datasets contains prices for:
 
@@ -28,46 +32,67 @@ For this project, only **Petrol 95** and **Diesel** prices are used.
   
 ### Unit conversion  
 
-The source uses `EUR / 1,000 litres` for petrol 95 and diesel. For this project, all prices have been converted to `EUR / L`.  
+Prices reported in `EUR per 1,000 litres` are converted to `EUR per litre` during transformation.
 
 
 ## 2. The Architecture 
   
 ![The architecture of the data engineering project.](/assets/images/data-engineering-architecture.svg)
   
-
 ## 3. Data Pipeline
 
-This is what happens in the pipeline, step by step:
+The pipeline downloads the European Commission's historical Weekly Oil Bulletin dataset, loads the source data into PostgreSQL, and uses dbt to transform it into analysis-ready models.
 
 ### 1. Extract
-Python downloads the latest European Commission files (the sheet containing latest prices, and the sheet containing latest prices + historical prices).  
+
+Python downloads the **"Prices with taxes" historical dataset** from the European Commission's Weekly Oil Bulletin.
+
+The dataset contains weekly fuel price observations dating back to 2005. The latest observation in the historical dataset is used as the dashboard's current price data.
 
 ### 2. Validation & minimal clean-up
+
 The ingestion process:
+
 * validates the HTTP response status
-* adds pipeline metadata (source link and ingestion time)
-* renames long column names
-* removed unnecessary fields such as footer notes.
-* converts pandas NaN to Python None
+* adds pipeline metadata such as the source URL and ingestion timestamp
+* renames long and duplicated column names to make them suitable for PostgreSQL
+* removes unnecessary rows and footer information from the source workbook
+* converts pandas `NaN` values to database-compatible `NULL` values
+
+The ingestion layer performs only the cleaning required to reliably load the source data. Major transformations are handled by dbt.
 
 ### 3. Load
-The source data is inserted into PostgreSQL raw tables. 
-The weekly table uses `(country, observed_date)` as its uniqueness constraint, preventing duplicate observations.
-The historical table uses `observed_date` because each historical observation contains all countries in one wide row.
+
+The processed source data is inserted into the PostgreSQL raw layer.
+
+The historical table uses `observed_date` as its uniqueness constraint because each historical observation contains all countries and fuel types in a single wide row.
+
+This makes the ingestion process idempotent: running the pipeline again does not create duplicate observations for an already ingested date.
 
 ### 4. Transform
-dbt converts the raw source data into analysis-ready models.  
-For both weekly and historical data, a staging model and mart model is created.  
+
+dbt converts the raw source data into analysis-ready models and runs data-quality tests during the build.
 
 #### In staging:
-* Tables are converted from a wide country-column structure into a normalized structure
-* Country codes are added
-* Units are converted
-* Rows with NULL price are filtered
 
-#### In marts:
-* Only petrol 95 and diesel are selected for analysis.
+* the wide country-column structure is converted into a normalized structure
+* country codes are extracted from the source column names
+* fuel types are identified
+* prices are converted from EUR per 1,000 litres to EUR per litre
+* rows without a valid price are filtered out
+* country names are added using the country-code seed
+
+#### In the fact model:
+
+The staging data is organized into a historical fuel-price fact table containing country, fuel type, price, and observation date.
+
+#### In the latest-price mart:
+
+The latest observation date is selected from the historical fact table and exposed as a separate model containing the current petrol and diesel prices used by the dashboard.
+
+This is a **derived model, not a separate data source**.
+
+* Only petrol 95 and diesel are selected for analysis for both historical and weekly observations.
 
 ## 4. Data Quality
 Data quality is checked with dbt tests, ensuring:

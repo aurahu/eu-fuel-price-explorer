@@ -8,7 +8,6 @@ import CountryComparison from "./components/CountryComparison";
 import { HistoricalFuelChart } from "./components/HistoricalFuelChart";
 import { ArrowRightIcon, ArrowDownIcon, GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";
 
-export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const latestDate = await getLatestObservedDate();
@@ -313,17 +312,16 @@ export default async function Home() {
         {/* About data */}
         <div id="about-data" className="flex flex-col w-full gap-12 px-2 justify-center border-t border-black items-center bg-accent-yellow pt-30 pb-4">
           <div className="flex flex-col lg:max-w-6xl md:px-20 md:mb-12 lg:px-4 px-4 gap-9">
-            <h2 className="mb-8 font-serif text-7xl lg:text-8xl font-medium text-black text-center">
+            <h2 className="mb-8 lg:mb-12 font-serif text-7xl lg:text-8xl font-medium text-black text-center">
               About the data
             </h2>
-            <div className="grid grid-cols-2 gap-9 md:gap-8 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-9 md:gap-8 lg:grid-cols-3 lg:gap-y-18">
               <div className="flex flex-col gap-4">
                 <h3 className="font-serif text-3xl md:text-4xl">
                   Source
                 </h3>
                 <p className="text-base md:text-lg text-muted-foreground">
-                  European Commission Weekly Oil Bulletin
-                </p>
+                  The dashboard uses the "Prices with taxes" historical dataset from the European Commission's Weekly Oil Bulletin, containing weekly national fuel-price observations. The project focuses on Euro-super 95 petrol and automotive diesel, including taxes.                </p>
                 <Link
                   className="text-left text-lg font-medium flex gap-2"
                   href="https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en"
@@ -333,33 +331,40 @@ export default async function Home() {
                   <span>
                     <ArrowRightIcon weight="light" color="var(--color-black)" size={24} />
                   </span>
-                    Visit site
+                    European Commission — Weekly Oil Bulletin
                 </Link>
               </div>
               <div className="flex flex-col gap-4">
                 <h3 className="font-serif text-3xl md:text-4xl">
-                  Frequency
+                  Processing
                 </h3>
                 <p className="text-base md:text-lg text-muted-foreground">
-                  Updated each Thursday, with data observed on Monday.
-                </p>
+                  Source data is downloaded and transformed for analysis. Prices are converted from EUR per 1,000 litres to EUR per litre and the original workbook structure is normalized for the dashboard.                </p>
               </div>
               <div className="flex flex-col gap-4">
                 <h3 className="font-serif text-3xl md:text-4xl">
                   Coverage
                 </h3>
                 <p className="text-base md:text-lg text-muted-foreground">
-                  27 European countries
+                  The dashboard uses national-level prices for EU countries. The latest available observation is used for current comparisons, while historical data is sampled to monthly observations for longer-term trends.                </p>
+              </div>
+              <div className="flex flex-col gap-4">
+                <h3 className="font-serif text-3xl md:text-4xl">
+                  Limitations
+                </h3>
+                <p className="text-base md:text-lg text-muted-foreground">
+                  The data represents nationally reported fuel prices published by the European Commission and should not be interpreted as live prices at individual petrol stations. Publication dates may also differ from the date on which prices are actually displayed at stations.
                 </p>
               </div>
               <div className="flex flex-col gap-4">
                 <h3 className="font-serif text-3xl md:text-4xl">
-                  Prices
+                  Reuse
                 </h3>
                 <p className="text-base md:text-lg text-muted-foreground">
-                  EUR / litre, including taxes
+                  The original data is provided by the European Commission. Please refer to the source for the applicable reuse conditions. This dashboard is an independent project and is not affiliated with or endorsed by the European Commission.
                 </p>
               </div>
+
             </div>
           </div>
 
@@ -409,7 +414,7 @@ export default async function Home() {
                     Source
                   </h3>
                   <p className="text-base md:text-xl text-light-gray">
-                    Weekly and historical fuel-price data published by the European Commission. Weekly data is updated on Thursdays.
+                    Historical fuel-price data published by the European Commission. The data is updated weekly on Thursdays.
                   </p>
                 </div>
 
@@ -418,7 +423,7 @@ export default async function Home() {
                     Python
                   </h3>
                   <p className="text-base md:text-xl text-light-gray">
-                    Downloads and validates the source files before loading them into the database.
+                    Downloads and validates the source file before loading it into the database.
                   </p>
                 </div>
                 

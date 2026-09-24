@@ -26,14 +26,6 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: Run weekly fuel price ingestion
-        env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: python -m ingestion.ingestion.fetch_fuel_prices
-
       - name: Run historical price ingestion
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
