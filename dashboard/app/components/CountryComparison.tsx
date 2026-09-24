@@ -580,7 +580,7 @@ export default function CountryComparison({ prices }: Props) {
               src="/section-img.jpg"
               alt="Decorative image for country selection"
               className="absolute inset-0 h-full w-full object-cover brightness-150 saturate-120 hue-rotate-15"
-              sizes="100vw"
+              sizes="600px"
               fill
             />
 

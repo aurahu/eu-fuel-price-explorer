@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import {
   getLastMonthPrices,
   getLastYearPrices,
+  getLast5YearsPrices,
   getLast10YearsPrices,
   getLast25YearsPrices,
 } from "@/lib/queries/historical-prices";
@@ -32,6 +33,11 @@ export async function GET(request: Request) {
         country,
         fuel
       );
+    } else if (view === "last-5-years") {
+    prices = await getLast5YearsPrices(
+      country,
+      fuel
+    );
     } else if (view === "last-10-years") {
       prices = await getLast10YearsPrices(
         country,

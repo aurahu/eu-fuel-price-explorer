@@ -48,6 +48,10 @@ const views = [
     label: "Last year",
   },
   {
+    value: "last-5-years",
+    label: "Last 5 years",
+  },
+  {
     value: "last-10-years",
     label: "Last 10 years",
   },
@@ -83,6 +87,10 @@ export function HistoricalFuelChart({
     {
       value: "last-year",
       label: "Last year",
+    },
+    {
+      value: "last-5-years",
+      label: "Last 5 years",
     },
     {
       value: "last-10-years",

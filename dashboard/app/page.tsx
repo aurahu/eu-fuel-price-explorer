@@ -315,7 +315,7 @@ export default async function Home() {
             <h2 className="mb-8 lg:mb-12 font-serif text-7xl lg:text-8xl font-medium text-black text-center">
               About the data
             </h2>
-            <div className="grid grid-cols-2 gap-9 md:gap-8 lg:grid-cols-3 lg:gap-y-18">
+            <div className="grid grid-cols-1 gap-12 md:gap-8 lg:grid-cols-3 lg:gap-y-18">
               <div className="flex flex-col gap-4">
                 <h3 className="font-serif text-3xl md:text-4xl">
                   Source
@@ -323,7 +323,7 @@ export default async function Home() {
                 <p className="text-base md:text-lg text-muted-foreground">
                   The dashboard uses the "Prices with taxes" historical dataset from the European Commission's Weekly Oil Bulletin, containing weekly national fuel-price observations. The project focuses on Euro-super 95 petrol and automotive diesel, including taxes.                </p>
                 <Link
-                  className="text-left text-lg font-medium flex gap-2"
+                  className="text-left text-base md:text-lg font-medium flex gap-2"
                   href="https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en"
                   target="_blank"
                   rel="noopener noreferrer"
